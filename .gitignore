@@ -132,7 +132,6 @@ dmypy.json
 data/curated/
 data/raw/
 data/landing
-data/taxi_zones
 
 # OSX .DS_Store file
 .DS_Store
