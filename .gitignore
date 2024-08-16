@@ -126,12 +126,13 @@ venv.bak/
 dmypy.json
 
 # Pyre type checker
-.pyre/
+.pyre/1
 
 # data
 data/curated/
 data/raw/
 data/landing
+data/taxi_zones
 
 # OSX .DS_Store file
 .DS_Store
