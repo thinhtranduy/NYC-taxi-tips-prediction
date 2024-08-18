@@ -133,6 +133,7 @@ data/curated/
 data/raw/
 data/landing
 data/taxi_zones
-
+data/hourly_weather_2023.csv
+data/weather_2023.csv
 # OSX .DS_Store file
 .DS_Store
