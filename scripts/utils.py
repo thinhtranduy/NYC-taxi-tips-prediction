@@ -1,5 +1,5 @@
 from pyspark.sql import functions as F
-from pyspark.sql.functions import col, unix_timestamp, month, dayofmonth, hour, format_number,  expr, when
+from pyspark.sql.functions import *
 from pyspark.sql.types import DoubleType, DateType
 
 
@@ -15,8 +15,9 @@ def filteringOnCondition(sdf):
     start_date = '2023-07-01'
     end_date = '2023-12-31'
     condition = (
-    (F.col('trip_distance') > 0) &
+    (F.col('trip_distance') > 0.5) &
     (F.col('passenger_count') > 0) &
+    (F.col('passenger_count') <= 7) &
     (F.col('fare_amount') > 0) &
     (F.col('extra') >= 0) &
     (F.col('mta_tax') == 0.5) &
@@ -45,8 +46,8 @@ def filteringOnCondition(sdf):
 
 def featureExtracting(sdf): 
     DROP_COLS = ['store_and_fwd_flag','mta_tax', 'is_valid_record', 'dolocationid', 
-             'vendorid', 'payment_type', 'tolls_amount', 'improvement_surcharge',
-             'congestion_surcharge', 'airport_fee', 'ratecodeid'
+             'vendorid', 'payment_type', 'tolls_amount', 'improvement_surcharge','passenger_count',
+             'congestion_surcharge', 'airport_fee', 'ratecodeid','total_amount', 'extra'
                 ]
     sdf_cleaned = sdf.drop(*DROP_COLS)
     
@@ -69,25 +70,6 @@ def extractingDateAndTime(sdf):
     return sdf
 
 
-def reFormat(sdf): 
-    # Drop the specified columns
-    sdf = sdf.drop("pulocationid","tpep_pickup_datetime", "tpep_dropoff_datetime")
-
-    # Format 'time_travel_minutes' to 4 decimal places
-    sdf = sdf.withColumn("time_travel_minutes", format_number(col("time_travel_minutes"), 4))
-
-    # Define the new column order without duplicates
-    new_column_order = [
-         'pu_location','pu_month', 'pu_day', 'pu_hour', 'is_weekend', 
-        'time_travel_minutes', 'passenger_count', 'trip_distance', 
-        'fare_amount', 'extra', 'tip_amount', 'total_amount','wind_speed',	
-        'dew_point',	'atmospheric_pressure',	'temperature'
-    ]
-
-    # Reorder columns
-    sdf = sdf.select(new_column_order)
-    return sdf
-
 
 def joiningWeatherData(data, weatherData):
     data = data.withColumn("tpep_pickup_datetime", F.date_format("tpep_pickup_datetime", "yyyy-MM-dd"))
@@ -95,14 +77,8 @@ def joiningWeatherData(data, weatherData):
                                   (data.pu_hour == weatherData.hour), 
                          "left")
     
-    result_df = joined_data.select(
-    col("tpep_pickup_datetime"), col("tpep_dropoff_datetime"), col("pu_month"), col("pu_day"),
-    col("pu_hour"), col("is_weekend"), col("time_travel_minutes"), col("passenger_count"),
-    col("trip_distance"), col("fare_amount"), col("extra"), col("tip_amount"), col("total_amount"),
-    col("pu_location"), col("wind_speed"), col("dew_point"), col("atmospheric_pressure"), col("temperature")
-    )
     
-    return result_df
+    return joined_data
 
 
 def joiningBoroughs(data, taxiZone):
@@ -121,4 +97,33 @@ def joiningBoroughs(data, taxiZone):
     
     
 
-    
+def reFormat(sdf): 
+    # Drop the specified columns
+    sdf = sdf.drop('tpep_pickup_datetime', 'tpep_dropoff_datetime')
+
+    columns_to_round = [
+    'trip_duration_minutes_scaled',
+    'fare_amount_scaled',
+    'wind_speed_scaled',
+    'dew_point_scaled',
+    'atmospheric_pressure_scaled',
+    'temperature_scaled'
+                ]
+
+    for column in columns_to_round:
+        sdf = sdf.withColumn(column, round(sdf[column], 4))
+    # Define the new column order without duplicates
+    new_column_order = [
+        'pulocationid','pu_location','pu_month', 'pu_day', 'pu_hour', 'is_weekend','is_peak_hour',
+        'trip_duration_minutes_scaled', 'trip_distance', 
+        'fare_amount_scaled','wind_speed_scaled',	
+        'dew_point_scaled','atmospheric_pressure_scaled','temperature_scaled', 'tip_amount'
+    ]
+
+    # Reorder columns
+    sdf = sdf.select(new_column_order)
+    return sdf
+
+
+
+
