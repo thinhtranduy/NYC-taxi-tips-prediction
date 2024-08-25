@@ -1,33 +1,29 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Yi0Zbe2y)
 # MAST30034 Project 1 README.md
-- Name: `INSERT YOUR NAME HERE`
-- Student ID: `INSERT YOUR STUDENT ID HERE`
+- Name: `Duy Thinh Tran`
+- Student ID: `1369324`
 
-## Student Instructions
-You **must** write up `README.md` for this repository to be eligable for readability marks.
+**Research Goal:** This research aim to predict tipping patterns in NYC based on location, by splitting tip-distance-ratio into 3 categories, small, normal and large tips.
 
-1. Students must keep all Jupyter Notebooks in the `notebooks` directory.
-2. Students must keep all `.py` scripts under the `scripts` directory. These can include helper functions and modules with relevant `__init__.py`
-3. Students must store all raw data downloaded (using a Python script) in the `data/raw` folder. This will be in the `.gitignore` so **do not upload any raw data files whatsoever**.
-4. Students must store all curated / transformed data in the `data/curated` folder. This will be in the `.gitignore` so **do not upload any raw data files whatsoever**. We will be running your code from the `scripts` directory to regenerate these.
-5. All plots must be saved in the `plots` directory.
-6. Finally, your report `.tex` files must be inside the `report` directory. If you are using overleaf, you can download the `.zip` and extract it into this folder.
-7. Add your name and Student ID to the fields above.
-8. Add your relevant `requirements.txt` to the root directory. If you are unsure, run `pip3 list --format=freeze > requirements.txt` (or alternative) and copy the output to the repository.
-9. You may delete all `.gitkeep` files if you really want to. These were used to ensure empty directories could be pushed to `git`.
-10. When you have read this, delete the `Student Instructions` section to clean the readme up.
+**Timeline:** The timeline for the research area is July 2023 to December 2023.
+Ensure requirements are met (all requirements for reproducing stored in `requirement.txt`)
 
-Remember, we will be reading through and running your code, so it is in _your best interest_ to ensure it is readable and efficient.
+Please visit the `scripts` directory and run the files in order to generating raw data:
+1. `downloadData.py`: This downloads the raw data into the `data/landing` directory.
+2. `weatherDataDownload.py`: This download weather data into `data` directory. 
+3. Manually download `Taxi Zone Shapefile` and `Taxi Zone Lookup Table` from (https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) and stored them in  `data/taxi_zones`
 
-## README example
-This is an example `README.md` for students to use. **Please change this to your requirements**.
 
-**Research Goal:** My research goal is tip analysis for credit card payments
+Please visit `notebooks` directory and run these files in order to generate curated data ready for analysis: 
 
-**Timeline:** The timeline for the research area is 2018 - 2021.
+1. `rawDataGenerate.ipynb`: This generates raw data in the `data/raw` directory. 
+2. `weatherDataProcessing.ipynb`: This generates hourly weather data in `data` directory.
+3. Run `tazi_zones_plot.ipynb` to generates GeoJson file in `data/taxi_zones` directory for geo spatial visualiztion
+3. `curatedDataGenerate.ipynb`: This perform necessary processing and analysis on the data, and stored in `data/curated`. For more details, please refer to the content in the notebook.
+4. `ExploringDataset.ipynb`: This provides details analysis about features chosen for the models.
+5. To train and test the Random Forest model, run the script inside `RandomForest.ipynb`
+6. To train and test the Neural Network model, run the script inside `MLP.ipynb`
 
-To run the pipeline, please visit the `scripts` directory and run the files in order:
-1. `download.py`: This downloads the raw data into the `data/landing` directory.
-2. `preprocess.ipynb`: This notebook details all preprocessing steps and outputs it to the `data/raw` and `data/curated` directory.
-3. `analysis.ipynb`: This notebook is used to conduct analysis on the curated data.
-4. `model.py` and `model_analysis.ipynb`: The script is used to run the model from CLI and the notebook is used for analysing and discussing the model.
+Plots are stored in `plots` directory.
+
+

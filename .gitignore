@@ -129,9 +129,9 @@ dmypy.json
 .pyre/1
 
 # data
-data/curated/
+data/landing/
 data/raw/
-data/landing
+data/curated/
 data/taxi_zones
 data/hourly_weather_2023.csv
 data/weather_2023.csv
