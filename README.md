@@ -1,7 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Yi0Zbe2y)
-# MAST30034 Project 1 README.md
-- Name: `Duy Thinh Tran`
-- Student ID: `1369324`
+
 
 **Research Goal:** This research aim to predict tipping patterns in NYC based on location, by splitting tip-distance-ratio into 3 categories, small, normal and large tips.
 
